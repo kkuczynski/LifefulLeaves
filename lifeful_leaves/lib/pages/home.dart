@@ -1,6 +1,6 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lifeful_leaves/widgets/open_menu_fab.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,26 +12,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Text('home'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/menu');
-        },
-        child: Container(
-          width: 51,
-          height: 51,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.green[700], width: 2.0)),
-          child: Icon(
-            Icons.apps,
-            color: Colors.green[700],
-            size: 30.0,
-          ),
+        child: Text(
+          'home',
+          style: TextStyle(fontFamily: 'IndieFlower'),
         ),
-        backgroundColor: Colors.green[300],
       ),
+      floatingActionButton: OpenMenuFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
