@@ -27,12 +27,51 @@ class Menu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  MenuButton(
-                      label: "Sprawdź naświetlenie",
-                      icon: Icons.wb_sunny_outlined,
-                      path: '/light')
+                  Expanded(
+                    flex: 5,
+                    child: MenuButton(
+                        label: 'Naświetlenie',
+                        icon: Icons.wb_sunny_outlined,
+                        path: '/light'),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: MenuButton(
+                        label: 'Ustawienia',
+                        icon: Icons.settings_outlined,
+                        path: '/settings'),
+                  ),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 10,
+                    child: MenuButton(
+                        label: 'Rośliny',
+                        icon: Icons.format_list_bulleted,
+                        path: '/list'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: MenuButton(
+                        label: 'Do podlania',
+                        icon: Icons.opacity,
+                        path: '/watering'),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: MenuButton(
+                        label: 'placeholder',
+                        icon: Icons.eco_outlined,
+                        path: '/watering'),
+                  ),
+                ],
+              )
             ]),
       ),
       floatingActionButton: CloseMenuFAB(),
