@@ -7,6 +7,7 @@ import 'package:lifeful_leaves/pages/menu.dart';
 import 'package:lifeful_leaves/pages/plant_list.dart';
 import 'package:lifeful_leaves/pages/settings.dart';
 import 'package:lifeful_leaves/pages/watering_list.dart';
+import 'package:lifeful_leaves/pages/weather.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,5 +20,6 @@ void main() {
             '/settings': (context) => Settings(),
             '/list': (context) => PlantList(),
             '/watering': (context) => WateringList(),
+            '/weather': (context) => Weather(),
           })));
 }

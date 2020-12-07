@@ -58,25 +58,28 @@ class _LightCheckState extends State<LightCheck> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Pomiar naświetlenia',
+          style: TextStyle(
+              fontFamily: 'IndieFlower',
+              color: Colors.white,
+              fontSize: 32),
+        ),
+      ),
+        backgroundColor: Colors.black87,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
+         
           value: SystemUiOverlayStyle.dark,
           child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
+            
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 20, 20, 150),
-                  child: Text(
-                    'Wyłącz sztuczne źródła swiatła i ustaw telefon ekranem w stronę okna.',
-                    style: TextStyle(
-                        fontFamily: 'IndieFlower',
-                        color: Colors.green[300],
-                        fontSize: 24),
-                  ),
-                ),
+                
                 Text(
                   'Oświetlenie (LX):',
                   style: TextStyle(
@@ -109,9 +112,20 @@ class _LightCheckState extends State<LightCheck> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 50, 20, 30),
+                  child: Text(
+                    'Wyłącz sztuczne źródła swiatła i ustaw telefon ekranem w stronę okna.',
+                    style: TextStyle(
+                        fontFamily: 'IndieFlower',
+                        color: Colors.green[300],
+                        
+                        fontSize: 18),
+                  ),
+                ),
               ]),
         ),
-      ),
+      
     );
   }
 }

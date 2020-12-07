@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/widgets/close_menu_fab.dart';
 import 'package:lifeful_leaves/widgets/menu_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Menu extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class Menu extends StatelessWidget {
               fontSize: 32),
         ),
       ),
-      body: Container(
+      body: Container( // TODO: fix nav bar color when going back to menu
         width: double.infinity,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -66,9 +67,9 @@ class Menu extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: MenuButton(
-                        label: 'placeholder',
-                        icon: Icons.eco_outlined,
-                        path: '/watering'),
+                        label: 'Stacja pogodowa',
+                        icon: FaIcon(FontAwesomeIcons.thermometerHalf).icon,
+                        path: '/weather'),
                   ),
                 ],
               )

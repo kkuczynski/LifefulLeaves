@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class MenuButton extends StatelessWidget {
   final String path;
   final String label;
-  final IconData icon;
-  MenuButton({this.path, this.label, this.icon});
+  final icon;
+  MenuButton({this.path, this.label, this.icon}); 
   @override
   Widget build(BuildContext context) {
     return Container(
