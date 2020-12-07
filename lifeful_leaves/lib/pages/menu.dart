@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/widgets/close_menu_fab.dart';
+import 'package:lifeful_leaves/widgets/menu_button.dart';
 
 class Menu extends StatelessWidget {
   @override
@@ -16,9 +17,24 @@ class Menu extends StatelessWidget {
               fontSize: 32),
         ),
       ),
-      body: RaisedButton(onPressed: () {
-        Navigator.pushNamed(context, '/light');
-      }),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MenuButton(
+                      label: "Sprawdź naświetlenie",
+                      icon: Icons.wb_sunny_outlined,
+                      path: '/light')
+                ],
+              ),
+            ]),
+      ),
       floatingActionButton: CloseMenuFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
