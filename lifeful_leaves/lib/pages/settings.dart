@@ -12,7 +12,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.green[700]),
         title: Text(
           'ustawienia',
           style: TextStyle(

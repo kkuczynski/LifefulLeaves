@@ -79,7 +79,7 @@ class _LightCheckState extends State<LightCheck> {
 
   @override
   Widget build(BuildContext context) {
-    
+    changeSystemColors(Colors.black, true);
     return WillPopScope(
       onWillPop: _onWillPop,
       child:

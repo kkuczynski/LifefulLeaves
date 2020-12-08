@@ -26,7 +26,7 @@ class _WeatherState extends State<Weather> {
         fetched = webScraper.getPageContent();
         tempIndex = fetched.indexOf('*C');
         tempIndex = fetched.lastIndexOf('>', tempIndex) + 3;
-        fetchedTemperature = fetched.substring(tempIndex, tempIndex + 6);
+        fetchedTemperature = fetched.substring(tempIndex, tempIndex + 5);
         humIndex = fetched.indexOf('Humidity');
         humIndex = fetched.indexOf('%', humIndex);
         fetchedHumidity = fetched.substring(humIndex - 8, humIndex - 3);
@@ -37,7 +37,6 @@ class _WeatherState extends State<Weather> {
   @override
   void initState() {
     super.initState();
-    // Requesting to fetch before UI drawing starts
     fetch();
   }
 
@@ -82,7 +81,7 @@ class _WeatherState extends State<Weather> {
                       child: fetched == null
                           ? CircularProgressIndicator(strokeWidth: 2,)
                           : Text(
-                              '$testTemperature' + '°C',
+                              '$fetchedTemperature' + '°C',
                               style: TextStyle(
                                 fontFamily: 'IndieFlower',
                                 color: Colors.black,
@@ -114,7 +113,7 @@ class _WeatherState extends State<Weather> {
                       child: fetched == null
                           ? CircularProgressIndicator(strokeWidth: 2)
                           : Text(
-                              '$testHumidity' + '%',
+                              '$fetchedHumidity' + '%',
                               style: TextStyle(
                                 fontFamily: 'IndieFlower',
                                 color: Colors.black,

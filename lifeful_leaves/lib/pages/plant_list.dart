@@ -11,7 +11,7 @@ class _PlantListState extends State<PlantList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.green[700]),
         title: Text(
           'Moje rośliny',
           style: TextStyle(
