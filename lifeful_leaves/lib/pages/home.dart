@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SafeArea(
         child: Text(
-          'home',
+          '',
           style: TextStyle(fontFamily: 'IndieFlower'),
         ),
       ),

@@ -54,7 +54,7 @@ class Menu extends StatelessWidget {
                     flex: 10,
                     child: MenuButton(
                         label: 'Rośliny',
-                        icon: Icons.format_list_bulleted,
+                        icon: Icons.eco_outlined,
                         path: '/list'),
                   ),
                 ],
