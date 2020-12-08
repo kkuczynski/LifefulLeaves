@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:light/light.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class LightCheck extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class LightCheck extends StatefulWidget {
 }
 
 class _LightCheckState extends State<LightCheck> {
+  
   String _luxString = 'Unknown';
   String _description = 'Unknown';
   Light _light;
@@ -51,16 +53,41 @@ class _LightCheckState extends State<LightCheck> {
     initPlatformState();
   }
 
+  @override
+  void dispose() {
+    stopListening();
+    changeSystemColors(Colors.white, false);     
+    super.dispose();
+  }
+
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    changeSystemColors(Colors.black, true);
     startListening();
+  }
+
+  Future<void> changeSystemColors(Color color, bool ifWhite) async{
+    await FlutterStatusbarcolor.setNavigationBarColor(color);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(ifWhite);    
+    }
+  
+  Future<bool> _onWillPop() async{    
+    //sleep(Duration(milliseconds: 200));
+    changeSystemColors(Colors.white, false);
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child:
+    Scaffold(
       appBar: AppBar(
+        
         backgroundColor: Colors.black,
+        brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Pomiar naświetlenia',
@@ -70,10 +97,9 @@ class _LightCheckState extends State<LightCheck> {
               fontSize: 32),
         ),
       ),
-        backgroundColor: Colors.black87,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
+        backgroundColor: Colors.black87,        body: Container(
          
-          value: SystemUiOverlayStyle.dark,
+          
           child: Column(
             
               mainAxisAlignment: MainAxisAlignment.end,
@@ -125,7 +151,7 @@ class _LightCheckState extends State<LightCheck> {
                 ),
               ]),
         ),
-      
+    ),
     );
   }
 }

@@ -4,11 +4,15 @@ import 'package:lifeful_leaves/widgets/menu_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Menu extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        brightness: Brightness.dark,
         automaticallyImplyLeading: false,
         title: Text(
           'menu',
@@ -18,7 +22,7 @@ class Menu extends StatelessWidget {
               fontSize: 32),
         ),
       ),
-      body: Container( // TODO: fix nav bar color when going back to menu
+      body: Container(
         width: double.infinity,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

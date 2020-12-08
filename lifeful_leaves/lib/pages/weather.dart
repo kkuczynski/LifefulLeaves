@@ -15,6 +15,8 @@ class _WeatherState extends State<Weather> {
   int humIndex;
   String fetchedTemperature = "";
   String fetchedHumidity = "";
+  double testHumidity = 54.88;
+  double testTemperature = 22.53;
   void fetch() async {
     // Loads web page and downloads into local state of library
     if (await webScraper.loadWebPage('http://192.168.8.105/')) {
@@ -24,7 +26,7 @@ class _WeatherState extends State<Weather> {
         fetched = webScraper.getPageContent();
         tempIndex = fetched.indexOf('*C');
         tempIndex = fetched.lastIndexOf('>', tempIndex) + 3;
-        fetchedTemperature = fetched.substring(tempIndex, tempIndex + 7);
+        fetchedTemperature = fetched.substring(tempIndex, tempIndex + 6);
         humIndex = fetched.indexOf('Humidity');
         humIndex = fetched.indexOf('%', humIndex);
         fetchedHumidity = fetched.substring(humIndex - 8, humIndex - 3);
@@ -54,16 +56,99 @@ class _WeatherState extends State<Weather> {
         ),
       ),
       body: SafeArea(
-        child: fetched == null
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ), // Loads Circular Loading Animation
-              )
-            : Column(
-                children: [Text(fetchedHumidity+'%'), Text(fetchedTemperature+'*C')],
+        child: Container(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Text(
+                      '\tTemperatura:',
+                      style: TextStyle(
+                        fontFamily: 'IndieFlower',
+                        color: Colors.green[700],
+                        fontSize: 28,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Center(
+                      child: fetched == null
+                          ? CircularProgressIndicator(strokeWidth: 2,)
+                          : Text(
+                              '$testTemperature' + '°C',
+                              style: TextStyle(
+                                fontFamily: 'IndieFlower',
+                                color: Colors.black,
+                                fontSize: 40,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                    ),
+                  )
+                ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Text(
+                      '\tWilgotność:',
+                      style: TextStyle(
+                        fontFamily: 'IndieFlower',
+                        color: Colors.green[700],
+                        fontSize: 28,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Center(
+                      child: fetched == null
+                          ? CircularProgressIndicator(strokeWidth: 2)
+                          : Text(
+                              '$testHumidity' + '%',
+                              style: TextStyle(
+                                fontFamily: 'IndieFlower',
+                                color: Colors.black,
+                                fontSize: 40,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          this.fetch();
+        },
+        child: Container(
+          width: 51,
+          height: 51,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.green[700], width: 2.0)),
+          child: Icon(
+            Icons.refresh_outlined,
+            color: Colors.green[700],
+            size: 30.0,
+          ),
+        ),
+        backgroundColor: Colors.green[300],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
