@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifeful_leaves/widgets/add_plant_fab.dart';
 
 class PlantList extends StatefulWidget {
   @override
@@ -20,6 +21,8 @@ class _PlantListState extends State<PlantList> {
               fontSize: 32),
         ),
       ),
+      floatingActionButton: AddPlantFAB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

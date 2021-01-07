@@ -1,4 +1,4 @@
-class Plant{
+class Plant {
   String name;
   String description;
   String spieces;
@@ -6,4 +6,9 @@ class Plant{
   DateTime lastWatering;
   DateTime nextWatering;
   int daysBetweenWaterings;
+  String picturePath;
+
+  Plant() {
+    this.picturePath = null;
+  }
 }
