@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/models/plant.dart';
@@ -9,6 +12,7 @@ class AddPlant extends StatefulWidget {
   const AddPlant({
     Key key,
     @required this.camera,
+    File image,
   }) : super(key: key);
 
   @override
@@ -17,6 +21,7 @@ class AddPlant extends StatefulWidget {
 
 class _AddPlantState extends State<AddPlant> {
   String imagePath;
+  File image;
   Plant newPlant = Plant();
   @override
   Widget build(BuildContext context) {
@@ -41,22 +46,21 @@ class _AddPlantState extends State<AddPlant> {
                 Row(
                   children: [
                     Container(
-                      margin: const EdgeInsets.all(10),
-                      width: width - 20,
-                      height: width - 20,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green[700])),
-                      child: newPlant.picturePath == null
-                          ? IconButton(
-                              icon: Icon(Icons.camera_alt_outlined),
-                              onPressed: () {
-                                _goToCamera(context);
-                              },
-                              iconSize: 80,
-                              color: Colors.green[700],
-                            )
-                          : Text('xd'),
-                    ),
+                        margin: const EdgeInsets.all(10),
+                        width: width - 20,
+                        height: width - 20,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green[700])),
+                        child: imagePath == null
+                            ? IconButton(
+                                icon: Icon(Icons.camera_alt_outlined),
+                                onPressed: () {
+                                  _goToCamera(context);
+                                },
+                                iconSize: 80,
+                                color: Colors.green[700],
+                              )
+                            : Image.file(File(imagePath))),
                   ],
                 )
               ],
@@ -66,7 +70,9 @@ class _AddPlantState extends State<AddPlant> {
   _goToCamera(BuildContext context) async {
     this.imagePath = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Camera(camera: camera)),
+      MaterialPageRoute(builder: (context) => Camera(camera: widget.camera)),
     );
+    print(this.imagePath);
+    setState(() {});
   }
 }

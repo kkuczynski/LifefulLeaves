@@ -36,7 +36,7 @@ void main() async {
               '/list': (context) => PlantList(),
               '/watering': (context) => WateringList(),
               '/weather': (context) => Weather(),
-              '/add_plant': (context) => AddPlant(),
+              '/add_plant': (context) => AddPlant(camera: firstCamera),
               '/camera': (context) => Camera(camera: firstCamera),
             },
             theme: ThemeData(accentColor: Colors.green[700]),

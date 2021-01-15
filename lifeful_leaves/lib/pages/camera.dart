@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
@@ -49,7 +52,15 @@ class CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Take a picture')),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        brightness: Brightness.light,
+        title: Text(
+          'Zrób zdjęcie',
+          style: TextStyle(
+              fontFamily: 'IndieFlower', color: Colors.white, fontSize: 32),
+        ),
+      ),
       // Wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner
       // until the controller has finished initializing.
@@ -80,21 +91,40 @@ class CameraState extends State<Camera> {
             final path = join(
               // Store the picture in the temp directory.
               // Find the temp directory using the `path_provider` plugin.
-              (await getApplicationDocumentsDirectory()).path,
+              (await getTemporaryDirectory()).path,
               '${DateTime.now()}.png',
             );
 
             // Attempt to take a picture and log where it's been saved.
-            await _controller.takePicture();
-            print(path);
-            // If the picture was taken, display it on a new screen.
+            await _controller.takePicture(path);
+            GallerySaver.saveImage(path);
             Navigator.pop(context, path);
+            //cropImage(path);
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
           }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Future cropImage(String path) async {
+    File image = await ImageCropper.cropImage(
+      sourcePath: path,
+      androidUiSettings: AndroidUiSettings(
+          backgroundColor: Colors.white,
+          hideBottomControls: true,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: true),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+    );
+
+    print(image.path);
+    // If the picture was taken, display it on a new screen.
+    Navigator.pop(context, image);
   }
 }
