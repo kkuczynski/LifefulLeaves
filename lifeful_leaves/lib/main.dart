@@ -39,6 +39,13 @@ void main() async {
               '/add_plant': (context) => AddPlant(camera: firstCamera),
               '/camera': (context) => Camera(camera: firstCamera),
             },
-            theme: ThemeData(accentColor: Colors.green[700]),
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primaryColor: Colors.green[700],
+              accentColor: Colors.black,
+              buttonColor: Colors.green[700],
+              cursorColor: Colors.green[700],
+              focusColor: Colors.green[700],
+            ),
           )));
 }
