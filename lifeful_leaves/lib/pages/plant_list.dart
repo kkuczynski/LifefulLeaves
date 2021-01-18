@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
@@ -21,6 +23,7 @@ class _PlantListState extends State<PlantList> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     this.dbLength = widget.dbService.getPlantBoxLength();
     return Scaffold(
       appBar: AppBar(
@@ -38,13 +41,204 @@ class _PlantListState extends State<PlantList> {
           ? ListView.builder(
               itemCount: dbLength,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(
-                      'Item ${widget.dbService.plantBox.getAt(index).name}'),
+                return Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomLeft,
+                          colors: [Colors.green[700], Colors.white])),
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: width - 200,
+                                  height: width - 200,
+                                  decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: Colors.green[700])),
+                                  child: widget.dbService
+                                                  .getPlantFromDatabase(index)
+                                                  .picturePath ==
+                                              null ||
+                                          File(widget.dbService
+                                                  .getPlantFromDatabase(index)
+                                                  .picturePath) ==
+                                              null
+                                      ? Icon(
+                                          Icons.eco,
+                                          size: 64,
+                                          color: Colors.green[700],
+                                        )
+                                      : AspectRatio(
+                                          aspectRatio: 1 / 1,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      alignment: FractionalOffset
+                                                          .topCenter,
+                                                      image: FileImage(
+                                                          File(widget.dbService.getPlantFromDatabase(index).picturePath))))))),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 196,
+                                    child: Text(
+                                      widget.dbService
+                                          .getPlantFromDatabase(index)
+                                          .name,
+                                      style: TextStyle(
+                                        fontFamily: 'IndieFlower',
+                                        color: Colors.black,
+                                        fontSize: 44,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Container(
+                                      width: 194,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                      child: Text(
+                                        '${widget.dbService.getPlantFromDatabase(index).spieces}',
+                                        style: TextStyle(
+                                            fontFamily: 'IndieFlower',
+                                            color: Colors.green[700],
+                                            fontSize: 20),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                  Container(
+                                      width: 194,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                      child: Text(
+                                        '${widget.dbService.getPlantFromDatabase(index).room}',
+                                        style: TextStyle(
+                                            fontFamily: 'IndieFlower',
+                                            color: Colors.green[700],
+                                            fontSize: 20),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                  Container(
+                                      width: 194,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                      child: Text(
+                                        'podlewać co ${widget.dbService.getPlantFromDatabase(index).daysBetweenWaterings} dni',
+                                        style: TextStyle(
+                                            fontFamily: 'IndieFlower',
+                                            color: Colors.green[700],
+                                            fontSize: 20),
+                                        overflow: TextOverflow.ellipsis,
+                                      ))
+                                ],
+                              ),
+                            ]),
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                            width: width - 4,
+                            child: Text(
+                              widget.dbService
+                                  .getPlantFromDatabase(index)
+                                  .description,
+                              style: TextStyle(
+                                  fontFamily: 'IndieFlower',
+                                  color: Colors.grey,
+                                  fontSize: 16),
+                              overflow: TextOverflow.clip,
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RawMaterialButton(
+                                onPressed: null,
+                                child: Container(
+                                  child: Container(
+                                    width: 37,
+                                    height: 37,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.green[300],
+                                        border: Border.all(
+                                            color: Colors.green[700],
+                                            width: 2.0)),
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.green[700],
+                                      size: 24.0,
+                                    ),
+                                  ),
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.green[300],
+                                          width: 2.0)),
+                                )),
+                            RawMaterialButton(
+                                onPressed: null,
+                                child: Container(
+                                  child: Container(
+                                    width: 37,
+                                    height: 37,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey,
+                                        border: Border.all(
+                                            color: Colors.black, width: 2.0)),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                      size: 24.0,
+                                    ),
+                                  ),
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.grey, width: 2.0)),
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 );
               },
             )
-          : Center(child: const Text('No items')),
+          : Center(
+              child: const Text(
+                'Brak roślin :c',
+                style: TextStyle(fontFamily: 'IndieFlower', fontSize: 32),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => openAddPlantPage(),
         child: Container(
@@ -61,7 +255,6 @@ class _PlantListState extends State<PlantList> {
         ),
         backgroundColor: Colors.green[300],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
