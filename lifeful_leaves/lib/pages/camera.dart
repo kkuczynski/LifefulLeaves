@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
@@ -45,85 +43,95 @@ class CameraState extends State<Camera> {
   void dispose() {
     // Dispose of the controller when the widget is disposed.
     _controller.dispose();
+    changeSystemColors(Colors.white, false);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        brightness: Brightness.light,
-        title: Text(
-          'Zrób zdjęcie',
-          style: TextStyle(
-              fontFamily: 'IndieFlower', color: Colors.white, fontSize: 32),
-        ),
-      ),
-      // Wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner
-      // until the controller has finished initializing.
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // If the Future is complete, display the preview.
-            return CameraPreview(_controller);
-          } else {
-            // Otherwise, display a loading indicator.
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt),
-        // Provide an onPressed callback.
-        onPressed: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
-          try {
-            // Ensure that the camera is initialized.
-            await _initializeControllerFuture;
-
-            // Construct the path where the image should be saved using the
-            // pattern package.
-            final path = join(
-              // Store the picture in the temp directory.
-              // Find the temp directory using the `path_provider` plugin.
-              (await getTemporaryDirectory()).path,
-              'lifefullaves${DateTime.now()}.png',
-            );
-
-            // Attempt to take a picture and log where it's been saved.
-            await _controller.takePicture(path);
-            GallerySaver.saveImage(path);
-            Navigator.pop(context, path);
-            //cropImage(path);
-          } catch (e) {
-            // If an error occurs, log the error to the console.
-            print(e);
-          }
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+    changeSystemColors(Colors.black, true);
+    AppBar appBar;
+    return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          appBar: appBar = AppBar(
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
+            title: Text(
+              'Zrób zdjęcie',
+              style: TextStyle(
+                  fontFamily: 'IndieFlower', color: Colors.white, fontSize: 32),
+            ),
+          ),
+          // Wait until the controller is initialized before displaying the
+          // camera preview. Use a FutureBuilder to display a loading spinner
+          // until the controller has finished initializing.
+          body: Stack(children: <Widget>[
+            FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // If the Future is complete, display the preview.
+                  return CameraPreview(_controller);
+                } else {
+                  // Otherwise, display a loading indicator.
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).size.width -
+                        appBar.preferredSize.height -
+                        kBottomNavigationBarHeight,
+                    color: Colors.black))
+          ]),
+          floatingActionButton: FloatingActionButton(
+            child: Container(
+              width: 51,
+              height: 51,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.green[700], width: 2.0)),
+              child: Icon(
+                Icons.camera,
+                color: Colors.green[700],
+                size: 45.0,
+              ),
+            ),
+            backgroundColor: Colors.green[300],
+            onPressed: () async {
+              try {
+                await _initializeControllerFuture;
+                final path = join(
+                  (await getTemporaryDirectory()).path,
+                  'lifefullaves${DateTime.now()}.png',
+                );
+                await _controller.takePicture(path);
+                GallerySaver.saveImage(path);
+                changeSystemColors(Colors.white, false);
+                Navigator.pop(context, path);
+              } catch (e) {
+                print(e);
+              }
+            },
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+        ));
   }
 
-  Future cropImage(String path) async {
-    File image = await ImageCropper.cropImage(
-      sourcePath: path,
-      androidUiSettings: AndroidUiSettings(
-          backgroundColor: Colors.white,
-          hideBottomControls: true,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: true),
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-      ],
-    );
+  Future<void> changeSystemColors(Color color, bool ifWhite) async {
+    await FlutterStatusbarcolor.setNavigationBarColor(color);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(ifWhite);
+  }
 
-    print(image.path);
-    // If the picture was taken, display it on a new screen.
-    Navigator.pop(context, image);
+  Future<bool> _onWillPop() async {
+    //sleep(Duration(milliseconds: 200));
+    changeSystemColors(Colors.white, false);
+    return true;
   }
 }

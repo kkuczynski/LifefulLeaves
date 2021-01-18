@@ -50,26 +50,29 @@ class _AddPlantState extends State<AddPlant> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.all(10),
-                        width: width - 20,
-                        height: width - 20,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.green[700])),
-                        child: imagePath == null
-                            ? IconButton(
-                                icon: Icon(Icons.camera_alt_outlined),
-                                onPressed: () {
-                                  _goToCamera(context);
-                                },
-                                iconSize: 80,
-                                color: Colors.green[700],
-                              )
-                            : Image.file(File(imagePath))),
-                  ],
-                ),
+                Container(
+                    margin: const EdgeInsets.all(10),
+                    width: width - 20,
+                    height: width - 20,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.green[700])),
+                    child: imagePath == null
+                        ? IconButton(
+                            icon: Icon(Icons.camera_alt_outlined),
+                            onPressed: () {
+                              _goToCamera(context);
+                            },
+                            iconSize: 80,
+                            color: Colors.green[700],
+                          )
+                        : AspectRatio(
+                            aspectRatio: 1 / 1,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.fitWidth,
+                                        alignment: FractionalOffset.topCenter,
+                                        image: FileImage(File(imagePath))))))),
                 Container(
                   margin: EdgeInsets.all(15),
                   child: Form(
