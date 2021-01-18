@@ -26,9 +26,26 @@ class AddPlant extends StatefulWidget {
 
 class _AddPlantState extends State<AddPlant> {
   final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final spiecesController = TextEditingController();
+  final roomController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final timeController = TextEditingController();
   String imagePath;
   File image;
   Plant newPlant = Plant();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    nameController.dispose();
+    spiecesController.dispose();
+    roomController.dispose();
+    descriptionController.dispose();
+    timeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -81,6 +98,7 @@ class _AddPlantState extends State<AddPlant> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TextFormField(
+                          controller: nameController,
                           decoration: const InputDecoration(
                             labelText: 'Nazwa',
                           ),
@@ -92,9 +110,7 @@ class _AddPlantState extends State<AddPlant> {
                           },
                         ),
                         TextFormField(
-                          onSaved: (String value) {
-                            newPlant.name = value;
-                          },
+                          controller: spiecesController,
                           decoration: const InputDecoration(
                             labelText: 'Gatunek',
                           ),
@@ -106,9 +122,7 @@ class _AddPlantState extends State<AddPlant> {
                           },
                         ),
                         TextFormField(
-                          onSaved: (String value) {
-                            newPlant.room = value;
-                          },
+                          controller: roomController,
                           decoration: const InputDecoration(
                             labelText: 'Pomieszczenie',
                           ),
@@ -120,9 +134,7 @@ class _AddPlantState extends State<AddPlant> {
                           },
                         ),
                         TextFormField(
-                          onSaved: (String value) {
-                            newPlant.description = value;
-                          },
+                          controller: descriptionController,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           decoration: const InputDecoration(
@@ -136,9 +148,7 @@ class _AddPlantState extends State<AddPlant> {
                           },
                         ),
                         TextFormField(
-                          onSaved: (String value) {
-                            newPlant.daysBetweenWaterings = int.parse(value);
-                          },
+                          controller: timeController,
                           decoration: const InputDecoration(
                               labelText: 'Dni między podlewaniem',
                               hintText: 'Latem przy niskiej wilgotności'),
@@ -214,7 +224,12 @@ class _AddPlantState extends State<AddPlant> {
   }
 
   _savePlant() {
-    widget.dbService.plantBox.add(this.newPlant);
+    newPlant.name = nameController.text;
+    newPlant.spieces = spiecesController.text;
+    newPlant.room = roomController.text;
+    newPlant.description = descriptionController.text;
+    newPlant.daysBetweenWaterings = int.parse(timeController.text);
+    widget.dbService.plantBox.add(newPlant);
     Navigator.pop(context, widget.dbService.getPlantBoxLength());
   }
 }

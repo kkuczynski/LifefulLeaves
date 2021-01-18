@@ -14,8 +14,8 @@ class DatabaseService {
     plantBox.putAt(index, plant);
   }
 
-  getPlantFromDatabase(int index) {
-    plantBox.getAt(index);
+  Plant getPlantFromDatabase(int index) {
+    return plantBox.getAt(index);
   }
 
   int getPlantBoxLength() {

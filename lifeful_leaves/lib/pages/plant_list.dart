@@ -34,7 +34,17 @@ class _PlantListState extends State<PlantList> {
               fontSize: 32),
         ),
       ),
-      body: Text(widget.dbService.getPlantBoxLength().toString()),
+      body: dbLength > 0
+          ? ListView.builder(
+              itemCount: dbLength,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(
+                      'Item ${widget.dbService.plantBox.getAt(index).name}'),
+                );
+              },
+            )
+          : Center(child: const Text('No items')),
       floatingActionButton: FloatingActionButton(
         onPressed: () => openAddPlantPage(),
         child: Container(
