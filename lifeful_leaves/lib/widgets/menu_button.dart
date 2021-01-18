@@ -4,11 +4,11 @@ class MenuButton extends StatelessWidget {
   final String path;
   final String label;
   final icon;
-  MenuButton({this.path, this.label, this.icon}); 
+  MenuButton({this.path, this.label, this.icon});
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FlatButton(
+      child: RawMaterialButton(
         onPressed: () {
           Navigator.pushNamed(context, this.path);
         },

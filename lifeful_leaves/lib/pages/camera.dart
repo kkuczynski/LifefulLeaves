@@ -6,7 +6,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
@@ -92,7 +91,7 @@ class CameraState extends State<Camera> {
               // Store the picture in the temp directory.
               // Find the temp directory using the `path_provider` plugin.
               (await getTemporaryDirectory()).path,
-              '${DateTime.now()}.png',
+              'lifefullaves${DateTime.now()}.png',
             );
 
             // Attempt to take a picture and log where it's been saved.

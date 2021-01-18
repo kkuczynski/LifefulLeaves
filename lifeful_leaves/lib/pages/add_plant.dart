@@ -1,19 +1,23 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
+import 'package:lifeful_leaves/services/database_service.dart';
 
 import 'camera.dart';
 
 class AddPlant extends StatefulWidget {
   final CameraDescription camera;
+
+  final DatabaseService dbService;
   const AddPlant({
     Key key,
     @required this.camera,
+    @required this.dbService,
     File image,
+    Box<Plant> box,
   }) : super(key: key);
 
   @override
@@ -130,7 +134,7 @@ class _AddPlantState extends State<AddPlant> {
                         ),
                         TextFormField(
                           onSaved: (String value) {
-                            newPlant.daysBetweenWaterings = value as int;
+                            newPlant.daysBetweenWaterings = int.parse(value);
                           },
                           decoration: const InputDecoration(
                               labelText: 'Dni między podlewaniem',
@@ -144,12 +148,12 @@ class _AddPlantState extends State<AddPlant> {
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: FlatButton(
+                            child: RawMaterialButton(
                               onPressed: () {
                                 // Validate will return true if the form is valid, or false if
                                 // the form is invalid.
                                 if (_formKey.currentState.validate()) {
-                                  // Process data.
+                                  _savePlant();
                                 }
                               },
                               child: Container(
@@ -202,6 +206,12 @@ class _AddPlantState extends State<AddPlant> {
       MaterialPageRoute(builder: (context) => Camera(camera: widget.camera)),
     );
     print(this.imagePath);
+    this.newPlant.picturePath = imagePath;
     setState(() {});
+  }
+
+  _savePlant() {
+    widget.dbService.plantBox.add(this.newPlant);
+    Navigator.pop(context, widget.dbService.getPlantBoxLength());
   }
 }

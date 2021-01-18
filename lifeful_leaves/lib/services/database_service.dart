@@ -1,6 +1,24 @@
-import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
+import 'package:lifeful_leaves/models/settings.dart';
 
 class DatabaseService {
-  addPlantToDatabase(Plant plant) {}
+  Box<Plant> plantBox;
+  Box<Settings> settingsBox;
+  DatabaseService(this.plantBox, this.settingsBox);
+  addPlantToDatabase(Plant plant) {
+    plantBox.add(plant);
+  }
+
+  putPlantAtIndex(int index, Plant plant) {
+    plantBox.putAt(index, plant);
+  }
+
+  getPlantFromDatabase(int index) {
+    plantBox.getAt(index);
+  }
+
+  int getPlantBoxLength() {
+    return plantBox.length;
+  }
 }
