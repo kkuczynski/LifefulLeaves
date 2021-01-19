@@ -4,25 +4,27 @@ import 'package:lifeful_leaves/widgets/menu_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Menu extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        brightness: Brightness.dark,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'menu',
-          style: TextStyle(
-              fontFamily: 'IndieFlower',
-              color: Colors.green[700],
-              fontSize: 32),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   brightness: Brightness.dark,
+      //   automaticallyImplyLeading: false,
+      //   title: Text(
+      //     'menu',
+      //     style: TextStyle(
+      //         fontFamily: 'IndieFlower',
+      //         color: Colors.green[700],
+      //         fontSize: 32),
+      //   ),
+      // ),
       body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomLeft,
+                colors: [Colors.green[50], Colors.white])),
         width: double.infinity,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

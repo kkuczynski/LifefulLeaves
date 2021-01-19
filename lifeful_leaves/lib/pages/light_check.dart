@@ -10,7 +10,6 @@ class LightCheck extends StatefulWidget {
 }
 
 class _LightCheckState extends State<LightCheck> {
-  
   String _luxString = 'Unknown';
   String _description = 'Unknown';
   Light _light;
@@ -56,7 +55,7 @@ class _LightCheckState extends State<LightCheck> {
   @override
   void dispose() {
     stopListening();
-    changeSystemColors(Colors.white, false);     
+    changeSystemColors(Colors.white, false);
     super.dispose();
   }
 
@@ -66,12 +65,12 @@ class _LightCheckState extends State<LightCheck> {
     startListening();
   }
 
-  Future<void> changeSystemColors(Color color, bool ifWhite) async{
+  Future<void> changeSystemColors(Color color, bool ifWhite) async {
     await FlutterStatusbarcolor.setNavigationBarColor(color);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(ifWhite);    
-    }
-  
-  Future<bool> _onWillPop() async{    
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(ifWhite);
+  }
+
+  Future<bool> _onWillPop() async {
     //sleep(Duration(milliseconds: 200));
     changeSystemColors(Colors.white, false);
     return true;
@@ -79,33 +78,26 @@ class _LightCheckState extends State<LightCheck> {
 
   @override
   Widget build(BuildContext context) {
-    changeSystemColors(Colors.black, true);
+    //changeSystemColors(Colors.black, true);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child:
-    Scaffold(
-      appBar: AppBar(
-        
-        backgroundColor: Colors.black,
-        brightness: Brightness.dark,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'Pomiar naświetlenia',
-          style: TextStyle(
-              fontFamily: 'IndieFlower',
-              color: Colors.white,
-              fontSize: 32),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+            'Pomiar naświetlenia',
+            style: TextStyle(
+                fontFamily: 'IndieFlower', color: Colors.white, fontSize: 32),
+          ),
         ),
-      ),
-        backgroundColor: Colors.black87,        body: Container(
-         
-          
+        backgroundColor: Colors.black87,
+        body: Container(
           child: Column(
-            
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                
                 Text(
                   'Oświetlenie (LX):',
                   style: TextStyle(
@@ -145,13 +137,12 @@ class _LightCheckState extends State<LightCheck> {
                     style: TextStyle(
                         fontFamily: 'IndieFlower',
                         color: Colors.green[300],
-                        
                         fontSize: 18),
                   ),
                 ),
               ]),
         ),
-    ),
+      ),
     );
   }
 }

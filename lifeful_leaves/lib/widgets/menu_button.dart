@@ -9,6 +9,8 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: RawMaterialButton(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         onPressed: () {
           Navigator.pushNamed(context, this.path);
         },

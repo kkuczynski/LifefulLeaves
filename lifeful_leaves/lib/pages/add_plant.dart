@@ -128,7 +128,7 @@ class _AddPlantState extends State<AddPlant> {
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Podaj pomiesczenie';
+                              return 'Podaj pomieszczenie';
                             }
                             return null;
                           },
@@ -148,6 +148,12 @@ class _AddPlantState extends State<AddPlant> {
                           },
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Podaj ilość dni';
+                            }
+                            return null;
+                          },
                           controller: timeController,
                           decoration: const InputDecoration(
                               labelText: 'Dni między podlewaniem',

@@ -18,16 +18,18 @@ class SettingsAdapter extends TypeAdapter<Settings> {
     };
     return Settings()
       ..useWeatherStation = fields[0] as bool
-      ..tmpTemperature = fields[1] as int
-      ..tmpHumidity = fields[2] as int
+      ..tmpTemperature = fields[1] as double
+      ..tmpHumidity = fields[2] as double
       ..adjustWateringsBasedOnConditions = fields[3] as bool
-      ..notificationsTime = fields[4] as TimeOfDay;
+      ..notificationsTimeHour = fields[4] as int
+      ..notificationsTimeMinute = fields[5] as int
+      ..weatherStationAddress = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.useWeatherStation)
       ..writeByte(1)
@@ -37,7 +39,11 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(3)
       ..write(obj.adjustWateringsBasedOnConditions)
       ..writeByte(4)
-      ..write(obj.notificationsTime);
+      ..write(obj.notificationsTimeHour)
+      ..writeByte(5)
+      ..write(obj.notificationsTimeMinute)
+      ..writeByte(6)
+      ..write(obj.weatherStationAddress);
   }
 
   @override

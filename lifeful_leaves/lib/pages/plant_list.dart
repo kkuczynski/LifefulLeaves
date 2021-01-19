@@ -27,16 +27,26 @@ class _PlantListState extends State<PlantList> {
     this.dbLength = widget.dbService.getPlantBoxLength();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.green[700]),
-        title: Text(
-          'Moje rośliny',
-          style: TextStyle(
-              fontFamily: 'IndieFlower',
-              color: Colors.green[700],
-              fontSize: 32),
-        ),
-      ),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.green[700]),
+          title: Text(
+            'Moje rośliny',
+            style: TextStyle(
+                fontFamily: 'IndieFlower',
+                color: Colors.green[700],
+                fontSize: 32),
+          ),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                    onTap: () => openAddPlantPage(),
+                    child: Icon(
+                      Icons.add,
+                      size: 26.0,
+                      color: Colors.green[700],
+                    )))
+          ]),
       body: dbLength > 0
           ? ListView.builder(
               itemCount: dbLength,
@@ -45,12 +55,15 @@ class _PlantListState extends State<PlantList> {
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
-                          end: Alignment.bottomLeft,
+                          end: Alignment.bottomRight,
                           colors: [Colors.green[700], Colors.white])),
                   child: Container(
-                    margin: const EdgeInsets.fromLTRB(2, 2, 2, 0),
+                    margin: const EdgeInsets.fromLTRB(0, 2, 2, 0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.green[50], Colors.white]),
                     ),
                     child: Column(
                       children: [
@@ -61,8 +74,13 @@ class _PlantListState extends State<PlantList> {
                                   width: width - 200,
                                   height: width - 200,
                                   decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Colors.green[700])),
+                                      border: Border(
+                                          right: BorderSide(
+                                              width: 2,
+                                              color: Colors.green[700]),
+                                          bottom: BorderSide(
+                                              width: 2,
+                                              color: Colors.green[700]))),
                                   child: widget.dbService
                                                   .getPlantFromDatabase(index)
                                                   .picturePath ==
@@ -82,10 +100,10 @@ class _PlantListState extends State<PlantList> {
                                               decoration: BoxDecoration(
                                                   image: DecorationImage(
                                                       fit: BoxFit.cover,
-                                                      alignment: FractionalOffset
-                                                          .topCenter,
-                                                      image: FileImage(
-                                                          File(widget.dbService.getPlantFromDatabase(index).picturePath))))))),
+                                                      alignment:
+                                                          FractionalOffset
+                                                              .topCenter,
+                                                      image: FileImage(File(widget.dbService.getPlantFromDatabase(index).picturePath))))))),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,13 +170,45 @@ class _PlantListState extends State<PlantList> {
                                   .description,
                               style: TextStyle(
                                   fontFamily: 'IndieFlower',
-                                  color: Colors.grey,
+                                  color: Colors.black45,
                                   fontSize: 16),
                               overflow: TextOverflow.clip,
                             )),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            RawMaterialButton(
+                                onPressed: null,
+                                child: Container(
+                                  child: Container(
+                                    width: 37,
+                                    height: 37,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white70,
+                                        border: Border.all(
+                                            color: Colors.black45, width: 2.0)),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.black45,
+                                      size: 24.0,
+                                    ),
+                                  ),
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.white70, width: 2.0)),
+                                )),
                             RawMaterialButton(
                                 onPressed: null,
                                 child: Container(
@@ -193,38 +243,6 @@ class _PlantListState extends State<PlantList> {
                                           color: Colors.green[300],
                                           width: 2.0)),
                                 )),
-                            RawMaterialButton(
-                                onPressed: null,
-                                child: Container(
-                                  child: Container(
-                                    width: 37,
-                                    height: 37,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey,
-                                        border: Border.all(
-                                            color: Colors.black, width: 2.0)),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                      size: 24.0,
-                                    ),
-                                  ),
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.8),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.grey, width: 2.0)),
-                                ))
                           ],
                         )
                       ],
@@ -239,22 +257,22 @@ class _PlantListState extends State<PlantList> {
                 style: TextStyle(fontFamily: 'IndieFlower', fontSize: 32),
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => openAddPlantPage(),
-        child: Container(
-          width: 51,
-          height: 51,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.green[700], width: 2.0)),
-          child: Icon(
-            Icons.add,
-            color: Colors.green[700],
-            size: 30.0,
-          ),
-        ),
-        backgroundColor: Colors.green[300],
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => openAddPlantPage(),
+      //   child: Container(
+      //     width: 51,
+      //     height: 51,
+      //     decoration: BoxDecoration(
+      //         shape: BoxShape.circle,
+      //         border: Border.all(color: Colors.green[700], width: 2.0)),
+      //     child: Icon(
+      //       Icons.add,
+      //       color: Colors.green[700],
+      //       size: 30.0,
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.green[300],
+      // ),
     );
   }
 

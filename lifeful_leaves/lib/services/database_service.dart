@@ -21,4 +21,26 @@ class DatabaseService {
   int getPlantBoxLength() {
     return plantBox.length;
   }
+
+  Settings getSettingsBox() {
+    return settingsBox.getAt(0);
+  }
+
+  initDefaultSettings() {
+    if (settingsBox.length == 0) {
+      Settings settings = Settings();
+      settings.adjustWateringsBasedOnConditions = true;
+      settings.notificationsTimeHour = 17;
+      settings.notificationsTimeMinute = 0;
+      settings.tmpHumidity = 40.0;
+      settings.tmpTemperature = 23.0;
+      settings.useWeatherStation = true;
+      settings.weatherStationAddress = 'http://192.168.8.105/';
+      settingsBox.add(settings);
+    }
+  }
+
+  saveSettings(Settings settings) {
+    settingsBox.putAt(0, settings);
+  }
 }

@@ -11,11 +11,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Text(
-          '',
-          style: TextStyle(fontFamily: 'IndieFlower'),
-        ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Colors.green[50], Colors.white])),
+        width: double.infinity,
       ),
       floatingActionButton: OpenMenuFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

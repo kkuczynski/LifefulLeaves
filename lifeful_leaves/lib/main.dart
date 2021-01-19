@@ -31,6 +31,8 @@ void main() async {
   var plantBox = await Hive.openBox<Plant>('box_for_plant');
   var settingsBox = await Hive.openBox<Settings>('box_for_settings');
   final dbService = DatabaseService(plantBox, settingsBox);
+  //settingsBox.clear();
+  dbService.initDefaultSettings();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
 
@@ -42,7 +44,7 @@ void main() async {
               '/home': (context) => Home(),
               '/menu': (context) => Menu(),
               '/light': (context) => LightCheck(),
-              '/settings': (context) => SettingsPage(),
+              '/settings': (context) => SettingsPage(dbService: dbService),
               '/list': (context) =>
                   PlantList(dbService: dbService, camera: firstCamera),
               '/watering': (context) => WateringList(),
@@ -55,12 +57,15 @@ void main() async {
               '/camera': (context) => Camera(camera: firstCamera),
             },
             theme: ThemeData(
-              brightness: Brightness.light,
-              primaryColor: Colors.green[700],
-              accentColor: Colors.black,
-              buttonColor: Colors.green[700],
-              cursorColor: Colors.green[700],
-              focusColor: Colors.green[700],
-            ),
+                brightness: Brightness.light,
+                primaryColor: Colors.green[700],
+                accentColor: Colors.black,
+                buttonColor: Colors.green[700],
+                cursorColor: Colors.green[700],
+                focusColor: Colors.green[700],
+                indicatorColor: Colors.green[700],
+                dividerColor: Colors.green[700],
+                textSelectionHandleColor: Colors.green[700],
+                fontFamily: 'IndieFlower'),
           )));
 }
