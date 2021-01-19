@@ -18,6 +18,10 @@ class DatabaseService {
     return plantBox.getAt(index);
   }
 
+  deletePlantAtIndex(int index) {
+    plantBox.deleteAt(index);
+  }
+
   int getPlantBoxLength() {
     return plantBox.length;
   }
