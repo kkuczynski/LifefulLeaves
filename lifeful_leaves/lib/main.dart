@@ -18,6 +18,7 @@ import 'package:lifeful_leaves/pages/watering_list.dart';
 import 'package:lifeful_leaves/pages/weather.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
+import 'package:lifeful_leaves/services/watering_service.dart';
 
 Future<void> changeSystemColors(Color color, bool ifWhite) async {
   await FlutterStatusbarcolor.setNavigationBarColor(color);
@@ -35,6 +36,7 @@ void main() async {
   var weeklyConditionsBox =
       await Hive.openBox<WeeklyConditions>('box_for_weekly_conditions');
   final dbService = DatabaseService(plantBox, settingsBox, weeklyConditionsBox);
+  final wateringService = WateringService(dbService);
   //settingsBox.clear();
   dbService.initDefaultSettings();
   dbService.fillWeeklyConditionsWithDefaultValues();
@@ -54,7 +56,10 @@ void main() async {
               '/settings': (context) => SettingsPage(dbService: dbService),
               '/list': (context) =>
                   PlantList(dbService: dbService, camera: firstCamera),
-              '/watering': (context) => WateringList(),
+              '/watering': (context) => WateringList(
+                    wateringService: wateringService,
+                    dbService: dbService,
+                  ),
               '/weather': (context) => Weather(),
               '/add_plant': (context) => AddPlant(
                     camera: firstCamera,
