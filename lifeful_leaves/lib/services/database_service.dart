@@ -1,11 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
 import 'package:lifeful_leaves/models/settings.dart';
+import 'package:lifeful_leaves/models/weekly_conditions.dart';
 
 class DatabaseService {
   Box<Plant> plantBox;
   Box<Settings> settingsBox;
-  DatabaseService(this.plantBox, this.settingsBox);
+  Box<WeeklyConditions> weeklyConditionsBox;
+  DatabaseService(this.plantBox, this.settingsBox, this.weeklyConditionsBox);
   addPlantToDatabase(Plant plant) {
     plantBox.add(plant);
   }
@@ -37,11 +39,35 @@ class DatabaseService {
       settings.notificationsTimeHour = 17;
       settings.notificationsTimeMinute = 0;
       settings.tmpHumidity = 40.0;
-      settings.tmpTemperature = 23.0;
+      settings.tmpTemperature = 22.0;
       settings.useWeatherStation = true;
       settings.weatherStationAddress = 'http://192.168.8.105/';
       settingsBox.add(settings);
     }
+  }
+
+  fillWeeklyConditionsWithDefaultValues() {
+    if (weeklyConditionsBox.length == 0) {
+      WeeklyConditions weeklyConditions = WeeklyConditions();
+      double humidity = settingsBox.getAt(0).tmpHumidity;
+      double temperature = settingsBox.getAt(0).tmpTemperature;
+      weeklyConditions.humidity = new List(7);
+      weeklyConditions.temperature = new List(7);
+      for (int i = 0; i < 7; i++) {
+        weeklyConditions.humidity[i] = humidity;
+        weeklyConditions.temperature[i] = temperature;
+      }
+      weeklyConditions.lastUpdate = 0;
+      weeklyConditionsBox.add(weeklyConditions);
+    }
+  }
+
+  WeeklyConditions getWeeklyConditions() {
+    return weeklyConditionsBox.getAt(0);
+  }
+
+  putWeeklyConditions(WeeklyConditions weeklyConditions) {
+    weeklyConditionsBox.putAt(0, weeklyConditions);
   }
 
   saveSettings(Settings settings) {

@@ -5,6 +5,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
 import 'package:lifeful_leaves/models/settings.dart';
+import 'package:lifeful_leaves/models/weekly_conditions.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:lifeful_leaves/pages/camera.dart';
 import 'package:lifeful_leaves/pages/home.dart';
@@ -28,11 +29,15 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(PlantAdapter());
   Hive.registerAdapter(SettingsAdapter());
+  Hive.registerAdapter(WeeklyConditionsAdapter());
   var plantBox = await Hive.openBox<Plant>('box_for_plant');
   var settingsBox = await Hive.openBox<Settings>('box_for_settings');
-  final dbService = DatabaseService(plantBox, settingsBox);
+  var weeklyConditionsBox =
+      await Hive.openBox<WeeklyConditions>('box_for_weekly_conditions');
+  final dbService = DatabaseService(plantBox, settingsBox, weeklyConditionsBox);
   //settingsBox.clear();
   dbService.initDefaultSettings();
+  dbService.fillWeeklyConditionsWithDefaultValues();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
 
@@ -41,7 +46,9 @@ void main() async {
             initialRoute: '/home',
             routes: {
               '/': (context) => Loading(),
-              '/home': (context) => Home(),
+              '/home': (context) => Home(
+                    dbService: dbService,
+                  ),
               '/menu': (context) => Menu(),
               '/light': (context) => LightCheck(),
               '/settings': (context) => SettingsPage(dbService: dbService),
