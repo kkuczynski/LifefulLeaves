@@ -4,8 +4,8 @@ import 'package:lifeful_leaves/services/database_service.dart';
 class WateringService {
   DatabaseService databaseService;
 
-  double averageTemperature;
-  double averageHumidity;
+  double averageTemperature = 22.0;
+  double averageHumidity = 40.0;
   double referenceHumidity = 40.0;
   double referenceTemperature = 22.0;
   double wateringMultiplier;
