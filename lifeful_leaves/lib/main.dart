@@ -8,6 +8,7 @@ import 'package:lifeful_leaves/models/settings.dart';
 import 'package:lifeful_leaves/models/weekly_conditions.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:lifeful_leaves/pages/camera.dart';
+import 'package:lifeful_leaves/pages/edit_plant.dart';
 import 'package:lifeful_leaves/pages/home.dart';
 import 'package:lifeful_leaves/pages/light_check.dart';
 import 'package:lifeful_leaves/pages/loading.dart';
@@ -63,7 +64,6 @@ void main() async {
               '/weather': (context) => Weather(),
               '/add_plant': (context) => AddPlant(
                     camera: firstCamera,
-                    box: plantBox,
                     dbService: dbService,
                   ),
               '/camera': (context) => Camera(camera: firstCamera),

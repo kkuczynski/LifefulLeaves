@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
+import 'package:lifeful_leaves/pages/edit_plant.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 
 class PlantList extends StatefulWidget {
@@ -211,7 +212,7 @@ class _PlantListState extends State<PlantList> {
                                           color: Colors.white70, width: 2.0)),
                                 )),
                             RawMaterialButton(
-                                onPressed: null,
+                                onPressed: () => {openEditPlantPage(index)},
                                 child: Container(
                                   child: Container(
                                     width: 37,
@@ -288,6 +289,19 @@ class _PlantListState extends State<PlantList> {
     if (this.dbLength < newDbLength) {
       setState(() {});
     }
+  }
+
+  openEditPlantPage(int index) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EditPlant(
+              camera: widget.camera,
+              dbService: widget.dbService,
+              index: index)),
+    );
+
+    setState(() {});
   }
 
   void _showAlert(String value, int index) {
