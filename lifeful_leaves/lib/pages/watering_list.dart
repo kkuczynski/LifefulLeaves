@@ -52,7 +52,7 @@ class _WateringListState extends State<WateringList> {
                           gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [Colors.white, Colors.white]),
+                              colors: [Colors.green[50], Colors.white]),
                         ),
                         child: Column(
                           children: [

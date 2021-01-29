@@ -178,7 +178,8 @@ class _PlantListState extends State<PlantList> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             RawMaterialButton(
-                                onPressed: null,
+                                onPressed: () =>
+                                    _showAlert('Czy na pewno usunąć?', index),
                                 child: Container(
                                   child: Container(
                                     width: 37,
@@ -287,5 +288,40 @@ class _PlantListState extends State<PlantList> {
     if (this.dbLength < newDbLength) {
       setState(() {});
     }
+  }
+
+  void _showAlert(String value, int index) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              content: new Text(
+                value,
+                style: new TextStyle(fontSize: 30.0),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () {
+                    widget.dbService.deletePlantAtIndex(index);
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                  child: Text(
+                    'Tak',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  textColor: Colors.red[700],
+                ),
+                new FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: new Text(
+                    'Nie',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  textColor: Colors.grey[700],
+                ),
+              ],
+            ));
   }
 }
