@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 

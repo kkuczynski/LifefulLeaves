@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:lifeful_leaves/services/database_service.dart';
 import 'package:web_scraper/web_scraper.dart';
 
 class Weather extends StatefulWidget {
+  final DatabaseService dbService;
+  const Weather({
+    Key key,
+    @required this.dbService,
+  }) : super(key: key);
   @override
   _WeatherState createState() => _WeatherState();
 }
 
 class _WeatherState extends State<Weather> {
   //final String weatherStationIP = 'http://192.168.8.105/';
-  final webScraper = WebScraper('http://192.168.8.105/');
+
   //List<Map<String, dynamic>> fetched;
   String fetched;
   int tempIndex;
   int humIndex;
   String fetchedTemperature = "";
   String fetchedHumidity = "";
-  double testHumidity = 54.88;
-  double testTemperature = 22.53;
   void fetch() async {
+    var webScraper =
+        WebScraper(widget.dbService.getSettingsBox().weatherStationAddress);
     // Loads web page and downloads into local state of library
-    if (await webScraper.loadWebPage('http://192.168.8.105/')) {
+    if (await webScraper
+        .loadWebPage(widget.dbService.getSettingsBox().weatherStationAddress)) {
       setState(() {
         // getElement takes the address of html tag/element and attributes you want to scrap from website
         // it will return the attributes in the same order passed
@@ -79,7 +86,9 @@ class _WeatherState extends State<Weather> {
                     flex: 4,
                     child: Center(
                       child: fetched == null
-                          ? CircularProgressIndicator(strokeWidth: 2,)
+                          ? CircularProgressIndicator(
+                              strokeWidth: 2,
+                            )
                           : Text(
                               '$fetchedTemperature' + '°C',
                               style: TextStyle(

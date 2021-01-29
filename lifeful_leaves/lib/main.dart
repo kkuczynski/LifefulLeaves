@@ -8,7 +8,6 @@ import 'package:lifeful_leaves/models/settings.dart';
 import 'package:lifeful_leaves/models/weekly_conditions.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:lifeful_leaves/pages/camera.dart';
-import 'package:lifeful_leaves/pages/edit_plant.dart';
 import 'package:lifeful_leaves/pages/home.dart';
 import 'package:lifeful_leaves/pages/light_check.dart';
 import 'package:lifeful_leaves/pages/loading.dart';
@@ -18,6 +17,7 @@ import 'package:lifeful_leaves/pages/settings_page.dart';
 import 'package:lifeful_leaves/pages/watering_list.dart';
 import 'package:lifeful_leaves/pages/weather.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lifeful_leaves/services/daily_weather_service.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 import 'package:lifeful_leaves/services/watering_service.dart';
 
@@ -36,11 +36,14 @@ void main() async {
   var settingsBox = await Hive.openBox<Settings>('box_for_settings');
   var weeklyConditionsBox =
       await Hive.openBox<WeeklyConditions>('box_for_weekly_conditions');
-  final dbService = DatabaseService(plantBox, settingsBox, weeklyConditionsBox);
-  final wateringService = WateringService(dbService);
+  final DatabaseService dbService =
+      DatabaseService(plantBox, settingsBox, weeklyConditionsBox);
+  final WateringService wateringService = WateringService(dbService);
   //settingsBox.clear();
   dbService.initDefaultSettings();
   dbService.fillWeeklyConditionsWithDefaultValues();
+  final DailyWeatherService dailyWeatherService =
+      DailyWeatherService(dbService);
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
 
@@ -48,9 +51,10 @@ void main() async {
       .then((value) => runApp(MaterialApp(
             initialRoute: '/home',
             routes: {
-              '/': (context) => Loading(),
               '/home': (context) => Home(
+                    wateringService: wateringService,
                     dbService: dbService,
+                    dailyWeatherService: dailyWeatherService,
                   ),
               '/menu': (context) => Menu(),
               '/light': (context) => LightCheck(),
@@ -61,7 +65,9 @@ void main() async {
                     wateringService: wateringService,
                     dbService: dbService,
                   ),
-              '/weather': (context) => Weather(),
+              '/weather': (context) => Weather(
+                    dbService: dbService,
+                  ),
               '/add_plant': (context) => AddPlant(
                     camera: firstCamera,
                     dbService: dbService,

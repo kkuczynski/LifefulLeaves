@@ -66,8 +66,11 @@ class DatabaseService {
     return weeklyConditionsBox.getAt(0);
   }
 
-  putWeeklyConditions(WeeklyConditions weeklyConditions) {
-    weeklyConditionsBox.putAt(0, weeklyConditions);
+  addWeeklyCondition(double humidity, double temperature) {
+    getWeeklyConditions().humidity.removeAt(0);
+    getWeeklyConditions().humidity.add(humidity);
+    getWeeklyConditions().temperature.removeAt(0);
+    getWeeklyConditions().temperature.add(temperature);
   }
 
   saveSettings(Settings settings) {

@@ -1,4 +1,5 @@
 import 'package:lifeful_leaves/models/plant.dart';
+import 'package:lifeful_leaves/models/plant_with_index.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 
 class WateringService {
@@ -59,5 +60,27 @@ class WateringService {
         0.01 * (averageHumidity - referenceHumidity) +
         0.02 * (averageTemperature - referenceTemperature) +
         0.1 * (7 - now.month).abs();
+  }
+
+  List<PlantWithIndex> getPlantsToWaterTodayList() {
+    List<PlantWithIndex> plantsToWater = [];
+    Plant tmpPlant;
+    DateTime today = DateTime.now();
+    DateTime nextWatering;
+    int length = databaseService.getPlantBoxLength();
+    for (int i = 0; i < length; i++) {
+      tmpPlant = databaseService.getPlantFromDatabase(i);
+      if (tmpPlant.nextWatering != null) {
+        nextWatering = DateTime.parse(tmpPlant.nextWatering.toIso8601String());
+        print(nextWatering);
+        if (nextWatering.isBefore(today.add(Duration(
+            hours: 24 - today.hour,
+            minutes: 60 - today.minute,
+            seconds: 60 - today.second)))) {
+          plantsToWater.add(PlantWithIndex(i, tmpPlant));
+        }
+      }
+    }
+    return plantsToWater;
   }
 }
