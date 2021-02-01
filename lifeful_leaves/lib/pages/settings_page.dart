@@ -28,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController minuteController = TextEditingController();
   final IpService ipService = IpService();
   Settings settings;
+  ScrollController scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -52,12 +53,26 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     settings = widget.dbService.getSettingsBox();
     temperatureController.text = settings.tmpTemperature.toString();
+    temperatureController.selection = TextSelection.fromPosition(
+        TextPosition(offset: temperatureController.text.length));
     humidityController.text = settings.tmpHumidity.toString();
+    humidityController.selection = TextSelection.fromPosition(
+        TextPosition(offset: humidityController.text.length));
     ipController1.text = ipService.cut(settings.weatherStationAddress, 1);
+    ipController1.selection = TextSelection.fromPosition(
+        TextPosition(offset: ipController1.text.length));
     ipController2.text = ipService.cut(settings.weatherStationAddress, 2);
+    ipController2.selection = TextSelection.fromPosition(
+        TextPosition(offset: ipController2.text.length));
     ipController3.text = ipService.cut(settings.weatherStationAddress, 3);
+    ipController3.selection = TextSelection.fromPosition(
+        TextPosition(offset: ipController3.text.length));
     ipController4.text = ipService.cut(settings.weatherStationAddress, 4);
+    ipController4.selection = TextSelection.fromPosition(
+        TextPosition(offset: ipController4.text.length));
     hourController.text = settings.notificationsTimeHour.toString();
+    hourController.selection = TextSelection.fromPosition(
+        TextPosition(offset: hourController.text.length));
     if (hourController.text.length == 1) {
       hourController.text = '0' + hourController.text;
     } else if (hourController.text.length == 0) {
@@ -88,6 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             body: SingleChildScrollView(
+              controller: scrollController,
               child: Container(
                   width: width,
                   margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
@@ -195,6 +211,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               margin: EdgeInsets.all(3),
                               alignment: Alignment.centerRight,
                               child: TextField(
+                                onChanged: (text) =>
+                                    {settings.tmpHumidity = double.parse(text)},
                                 controller: humidityController,
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.black),
@@ -395,13 +413,17 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Text('Czas wysyłania powiadomień',
-                              style: TextStyle(
-                                  fontFamily: 'IndieFlower',
-                                  color: Colors.black,
-                                  fontSize: 18)),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Text('Czas wysyłania powiadomień',
+                                  style: TextStyle(
+                                      fontFamily: 'IndieFlower',
+                                      color: Colors.black,
+                                      fontSize: 18)),
+                            ),
+                          ],
                         ),
                         Container(
                             width: width,
@@ -415,6 +437,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                     child: TextField(
                                         textAlign: TextAlign.center,
                                         controller: hourController,
+                                        onTap: () => scrollController.jumpTo(
+                                            scrollController
+                                                .position.maxScrollExtent),
                                         onChanged: (text) => {
                                               if (0 >
                                                       int.parse(hourController
@@ -449,6 +474,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                     alignment: Alignment.centerRight,
                                     child: TextField(
                                         textAlign: TextAlign.center,
+                                        onTap: () => scrollController.jumpTo(
+                                            scrollController
+                                                .position.maxScrollExtent),
                                         controller: minuteController,
                                         onChanged: (text) => {
                                               if (0 >
@@ -475,7 +503,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                           FilteringTextInputFormatter.digitsOnly
                                         ]),
                                   ),
-                                ]))
+                                ])),
+                        SizedBox(
+                          height: 140,
+                        )
                       ])),
             ),
             floatingActionButton: FloatingActionButton(

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:lifeful_leaves/pages/menu.dart';
 
 class OpenMenuFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/menu');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Menu()),
+        );
       },
       child: Container(
         width: 51,

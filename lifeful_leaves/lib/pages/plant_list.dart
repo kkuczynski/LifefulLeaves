@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:lifeful_leaves/pages/add_plant.dart';
+import 'package:lifeful_leaves/pages/edit_plant.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 
 class PlantList extends StatefulWidget {
@@ -178,7 +179,8 @@ class _PlantListState extends State<PlantList> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             RawMaterialButton(
-                                onPressed: null,
+                                onPressed: () =>
+                                    _showAlert('Czy na pewno usunąć?', index),
                                 child: Container(
                                   child: Container(
                                     width: 37,
@@ -210,7 +212,7 @@ class _PlantListState extends State<PlantList> {
                                           color: Colors.white70, width: 2.0)),
                                 )),
                             RawMaterialButton(
-                                onPressed: null,
+                                onPressed: () => {openEditPlantPage(index)},
                                 child: Container(
                                   child: Container(
                                     width: 37,
@@ -287,5 +289,53 @@ class _PlantListState extends State<PlantList> {
     if (this.dbLength < newDbLength) {
       setState(() {});
     }
+  }
+
+  openEditPlantPage(int index) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EditPlant(
+              camera: widget.camera,
+              dbService: widget.dbService,
+              index: index)),
+    );
+
+    setState(() {});
+  }
+
+  void _showAlert(String value, int index) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              content: new Text(
+                value,
+                style: new TextStyle(fontSize: 30.0),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () {
+                    widget.dbService.deletePlantAtIndex(index);
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                  child: Text(
+                    'Tak',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  textColor: Colors.red[700],
+                ),
+                new FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: new Text(
+                    'Nie',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  textColor: Colors.grey[700],
+                ),
+              ],
+            ));
   }
 }

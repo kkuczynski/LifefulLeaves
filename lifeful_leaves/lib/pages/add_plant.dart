@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 
@@ -17,7 +16,6 @@ class AddPlant extends StatefulWidget {
     @required this.camera,
     @required this.dbService,
     File image,
-    Box<Plant> box,
   }) : super(key: key);
 
   @override
@@ -84,12 +82,18 @@ class _AddPlantState extends State<AddPlant> {
                           )
                         : AspectRatio(
                             aspectRatio: 1 / 1,
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        fit: BoxFit.fitWidth,
-                                        alignment: FractionalOffset.topCenter,
-                                        image: FileImage(File(imagePath))))))),
+                            child: RawMaterialButton(
+                                onPressed: () {
+                                  _goToCamera(context);
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            fit: BoxFit.fitWidth,
+                                            alignment:
+                                                FractionalOffset.topCenter,
+                                            image: FileImage(
+                                                File(imagePath)))))))),
                 Container(
                   margin: EdgeInsets.all(15),
                   child: Form(
@@ -235,7 +239,7 @@ class _AddPlantState extends State<AddPlant> {
     newPlant.room = roomController.text;
     newPlant.description = descriptionController.text;
     newPlant.daysBetweenWaterings = int.parse(timeController.text);
-    widget.dbService.plantBox.add(newPlant);
+    widget.dbService.addPlantToDatabase(newPlant);
     Navigator.pop(context, widget.dbService.getPlantBoxLength());
   }
 }
