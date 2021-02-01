@@ -10,7 +10,6 @@ import 'package:lifeful_leaves/pages/add_plant.dart';
 import 'package:lifeful_leaves/pages/camera.dart';
 import 'package:lifeful_leaves/pages/home.dart';
 import 'package:lifeful_leaves/pages/light_check.dart';
-import 'package:lifeful_leaves/pages/loading.dart';
 import 'package:lifeful_leaves/pages/menu.dart';
 import 'package:lifeful_leaves/pages/plant_list.dart';
 import 'package:lifeful_leaves/pages/settings_page.dart';

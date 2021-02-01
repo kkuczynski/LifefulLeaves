@@ -57,6 +57,7 @@ class _EditPlantState extends State<EditPlant> {
   @override
   Widget build(BuildContext context) {
     copiedPlant = widget.dbService.getPlantFromDatabase(widget.index);
+    imagePath = copiedPlant.picturePath;
     nameController.text = copiedPlant.name;
     nameController.selection = TextSelection.fromPosition(
         TextPosition(offset: nameController.text.length));
