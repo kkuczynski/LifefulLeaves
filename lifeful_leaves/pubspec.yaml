@@ -34,7 +34,8 @@ dependencies:
   path:
   gallery_saver:
   image_picker:
-  image_cropper:
+  workmanager: ^0.2.0
+  flutter_local_notifications: ^4.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

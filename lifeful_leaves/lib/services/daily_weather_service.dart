@@ -38,5 +38,6 @@ class DailyWeatherService {
     await getTodaysWeather();
     dbService.addWeeklyCondition(
         double.parse(fetchedHumidity), double.parse(fetchedTemperature));
+    print('done');
   }
 }

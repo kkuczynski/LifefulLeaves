@@ -72,7 +72,7 @@ class WateringService {
       tmpPlant = databaseService.getPlantFromDatabase(i);
       if (tmpPlant.nextWatering != null) {
         nextWatering = DateTime.parse(tmpPlant.nextWatering.toIso8601String());
-        print(nextWatering);
+        //print(nextWatering);
         if (nextWatering.isBefore(today.add(Duration(
             hours: 24 - today.hour,
             minutes: 60 - today.minute,
