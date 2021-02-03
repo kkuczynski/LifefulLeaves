@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:hive/hive.dart';
 import 'package:lifeful_leaves/models/plant.dart';
@@ -18,8 +19,8 @@ import 'package:lifeful_leaves/pages/weather.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lifeful_leaves/services/daily_weather_service.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
+import 'package:lifeful_leaves/services/notification_service.dart';
 import 'package:lifeful_leaves/services/watering_service.dart';
-import 'package:workmanager/workmanager.dart';
 
 Future<void> changeSystemColors(Color color, bool ifWhite) async {
   await FlutterStatusbarcolor.setNavigationBarColor(color);
@@ -55,24 +56,22 @@ void main() async {
       await Hive.openBox<WeeklyConditions>('box_for_weekly_conditions');
   final DatabaseService dbService =
       DatabaseService(plantBox, settingsBox, weeklyConditionsBox);
-  final WateringService wateringService = WateringService(dbService);
-  //settingsBox.clear();
   dbService.initDefaultSettings();
   dbService.fillWeeklyConditionsWithDefaultValues();
   final DailyWeatherService dailyWeatherService =
       DailyWeatherService(dbService);
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
-  // Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
-  // Workmanager.registerPeriodicTask(
-  //   "1",
-  //   "backgroundTask",
-  //   frequency: Duration(days: 1),
-  //   constraints: Constraints(
-  //     networkType: NetworkType.connected,
-  //   ),
-  //   existingWorkPolicy: ExistingWorkPolicy.replace,
-  // );
+  NotificationAppLaunchDetails notifLaunch;
+  final FlutterLocalNotificationsPlugin notifsPlugin =
+      FlutterLocalNotificationsPlugin();
+  final NotificationService notificationService =
+      NotificationService(dbService);
+  notifLaunch = await notifsPlugin.getNotificationAppLaunchDetails();
+  await notificationService.initNotifications(notifsPlugin);
+  final WateringService wateringService =
+      WateringService(dbService, notifsPlugin, notificationService);
+  dailyWeatherService.dailyWeatherUpdate();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MaterialApp(
             initialRoute: '/home',
@@ -93,6 +92,7 @@ void main() async {
                   ),
               '/weather': (context) => Weather(
                     dbService: dbService,
+                    dailyWeatherService: dailyWeatherService,
                   ),
               '/add_plant': (context) => AddPlant(
                     camera: firstCamera,

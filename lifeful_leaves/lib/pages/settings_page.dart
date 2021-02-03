@@ -129,6 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   setState(() {
                                     settings.adjustWateringsBasedOnConditions =
                                         value;
+                                    widget.dbService.saveSettings(settings);
                                   });
                                 })
                           ],
@@ -149,6 +150,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                 onChanged: (value) {
                                   setState(() {
                                     settings.useWeatherStation = value;
+
+                                    widget.dbService.saveSettings(settings);
                                   });
                                 })
                           ],
@@ -171,8 +174,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: TextField(
                                 controller: temperatureController,
                                 onChanged: (text) => {
-                                  settings.tmpTemperature =
-                                      double.parse(temperatureController.text)
+                                  settings.tmpTemperature = double.parse(text),
+                                  widget.dbService.saveSettings(settings)
                                 },
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.black),
@@ -211,8 +214,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               margin: EdgeInsets.all(3),
                               alignment: Alignment.centerRight,
                               child: TextField(
-                                onChanged: (text) =>
-                                    {settings.tmpHumidity = double.parse(text)},
+                                onChanged: (text) => {
+                                  settings.tmpHumidity = double.parse(text),
+                                  widget.dbService.saveSettings(settings)
+                                },
                                 controller: humidityController,
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.black),
@@ -260,10 +265,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                     onChanged: (text) => {
                                           settings.weatherStationAddress =
                                               ipService.createIpAddress(
-                                                  ipController1.text,
+                                                  text,
                                                   ipController2.text,
                                                   ipController3.text,
-                                                  ipController4.text)
+                                                  ipController4.text),
+                                          widget.dbService
+                                              .saveSettings(settings)
                                         },
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black),
@@ -292,9 +299,11 @@ class _SettingsPageState extends State<SettingsPage> {
                                           settings.weatherStationAddress =
                                               ipService.createIpAddress(
                                                   ipController1.text,
-                                                  ipController2.text,
+                                                  text,
                                                   ipController3.text,
-                                                  ipController4.text)
+                                                  ipController4.text),
+                                          widget.dbService
+                                              .saveSettings(settings)
                                         },
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black),
@@ -324,8 +333,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                               ipService.createIpAddress(
                                                   ipController1.text,
                                                   ipController2.text,
-                                                  ipController3.text,
-                                                  ipController4.text)
+                                                  text,
+                                                  ipController4.text),
+                                          widget.dbService
+                                              .saveSettings(settings)
                                         },
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black),
@@ -356,7 +367,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                                   ipController1.text,
                                                   ipController2.text,
                                                   ipController3.text,
-                                                  ipController4.text)
+                                                  text),
+                                          widget.dbService
+                                              .saveSettings(settings)
                                         },
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black),
@@ -449,7 +462,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                                           hourController.text))
                                                 {hourController.text = ''},
                                               settings.notificationsTimeHour =
-                                                  int.parse(hourController.text)
+                                                  int.parse(
+                                                      hourController.text),
+                                              widget.dbService
+                                                  .saveSettings(settings)
                                             },
                                         style: TextStyle(
                                             fontSize: 30, color: Colors.black),
@@ -488,7 +504,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                                 {minuteController.text = ''},
                                               settings.notificationsTimeMinute =
                                                   int.parse(
-                                                      minuteController.text)
+                                                      minuteController.text),
+                                              widget.dbService
+                                                  .saveSettings(settings)
                                             },
                                         style: TextStyle(
                                             fontSize: 30, color: Colors.black),

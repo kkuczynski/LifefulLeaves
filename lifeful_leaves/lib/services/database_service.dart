@@ -66,11 +66,24 @@ class DatabaseService {
     return weeklyConditionsBox.getAt(0);
   }
 
-  addWeeklyCondition(double humidity, double temperature) {
-    getWeeklyConditions().humidity.removeAt(0);
-    getWeeklyConditions().humidity.add(humidity);
-    getWeeklyConditions().temperature.removeAt(0);
-    getWeeklyConditions().temperature.add(temperature);
+  addWeeklyCondition(double humidity, double temperature, int day) {
+    WeeklyConditions weeklyConditions = getWeeklyConditions();
+    if (weeklyConditions.lastUpdate != day) {
+      List<double> tmpListHum = [];
+      for (int i = 0; i < 6; i++) {
+        tmpListHum.add(weeklyConditions.humidity[i + 1]);
+      }
+      tmpListHum.add(humidity);
+      weeklyConditions.humidity = tmpListHum;
+      List<double> tmpListTemp = [];
+      for (int i = 0; i < 6; i++) {
+        tmpListTemp.add(weeklyConditions.humidity[i + 1]);
+      }
+      tmpListTemp.add(temperature);
+      weeklyConditions.temperature = tmpListTemp;
+      weeklyConditions.lastUpdate = day;
+      weeklyConditionsBox.putAt(0, weeklyConditions);
+    }
   }
 
   saveSettings(Settings settings) {

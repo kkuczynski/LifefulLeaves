@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:lifeful_leaves/services/daily_weather_service.dart';
 import 'package:lifeful_leaves/services/database_service.dart';
 import 'package:web_scraper/web_scraper.dart';
 
 class Weather extends StatefulWidget {
   final DatabaseService dbService;
+  final DailyWeatherService dailyWeatherService;
   const Weather({
     Key key,
     @required this.dbService,
+    @required this.dailyWeatherService,
   }) : super(key: key);
   @override
   _WeatherState createState() => _WeatherState();
@@ -37,6 +40,7 @@ class _WeatherState extends State<Weather> {
         humIndex = fetched.indexOf('Humidity');
         humIndex = fetched.indexOf('%', humIndex);
         fetchedHumidity = fetched.substring(humIndex - 8, humIndex - 3);
+        widget.dailyWeatherService.dailyWeatherUpdate();
       });
     }
   }
