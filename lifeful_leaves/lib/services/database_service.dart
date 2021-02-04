@@ -77,10 +77,15 @@ class DatabaseService {
       weeklyConditions.humidity = tmpListHum;
       List<double> tmpListTemp = [];
       for (int i = 0; i < 6; i++) {
-        tmpListTemp.add(weeklyConditions.humidity[i + 1]);
+        tmpListTemp.add(weeklyConditions.temperature[i + 1]);
       }
       tmpListTemp.add(temperature);
       weeklyConditions.temperature = tmpListTemp;
+      weeklyConditions.lastUpdate = day;
+      weeklyConditionsBox.putAt(0, weeklyConditions);
+    } else if (weeklyConditions.lastUpdate < 0) {
+      weeklyConditions.humidity[6] = humidity;
+      weeklyConditions.temperature[6] = temperature;
       weeklyConditions.lastUpdate = day;
       weeklyConditionsBox.putAt(0, weeklyConditions);
     }
