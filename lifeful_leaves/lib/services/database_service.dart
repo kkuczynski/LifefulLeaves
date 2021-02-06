@@ -91,6 +91,14 @@ class DatabaseService {
     }
   }
 
+  overwriteWeeklyCondition(double humidity, double temperature, int day) {
+    WeeklyConditions weeklyConditions = getWeeklyConditions();
+    weeklyConditions.humidity[6] = humidity;
+    weeklyConditions.temperature[6] = temperature;
+    weeklyConditions.lastUpdate = day;
+    weeklyConditionsBox.putAt(0, weeklyConditions);
+  }
+
   saveSettings(Settings settings) {
     settingsBox.putAt(0, settings);
   }

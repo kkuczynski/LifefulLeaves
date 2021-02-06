@@ -77,11 +77,11 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text(
                                   'temp.:',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 14),
                                 ),
                                 Text(
                                   'wilg.:',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 14),
                                 )
                               ],
                             )),
@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                                     widget.dbService
                                             .getWeeklyConditions()
                                             .temperature[i]
-                                            .toString() +
+                                            .toStringAsFixed(1) +
                                         '°C',
                                     style: TextStyle(fontSize: 16),
                                   ),
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                                     widget.dbService
                                             .getWeeklyConditions()
                                             .humidity[i]
-                                            .toString() +
+                                            .toStringAsFixed(1) +
                                         '%',
                                     style: TextStyle(fontSize: 14),
                                   ),

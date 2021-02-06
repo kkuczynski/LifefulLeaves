@@ -45,6 +45,15 @@ class _WeatherState extends State<Weather> {
     }
   }
 
+  void fetchAndSave() async {
+    fetch();
+    int dayOfTheWeek = DateTime.now().weekday;
+    widget.dbService.overwriteWeeklyCondition(
+        double.parse(this.fetchedHumidity),
+        double.parse(this.fetchedTemperature),
+        dayOfTheWeek);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -144,7 +153,7 @@ class _WeatherState extends State<Weather> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          this.fetch();
+          this.fetchAndSave();
         },
         child: Container(
           width: 51,
